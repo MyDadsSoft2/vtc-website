@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Scott's Transport — Virtual Trucking Co.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;            /* near-black, road at night */
+    --bg-2: #12151b;          /* panel */
+    --bg-3: #1a1e26;          /* raised panel */
+    --line: #2a2f3a;          /* hairlines */
+    --bone: #efe8d8;          /* cream paper */
+    --bone-2: #d9d2c2;
+    --ink: #0a0c10;
+    --ash: #6b7280;
+    --amber: #ffae00;         /* high-vis / VMS amber — primary accent */
+    --amber-deep: #d68f00;
+    --amber-glow: rgba(255,174,0,0.55);
+    --hi-vis: #ff6b1a;        /* secondary safety orange */
+    --white: #ffffff;
+    --red: #e53e3e;
+    --green: #38c172;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--bone);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; transition: color .2s ease, opacity .2s ease; }
+
+  /* ============= NAV ============= */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 24px;
+    background: rgba(10,12,16,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    z-index: 100;
+  }
+  nav .brand { display: flex; align-items: center; gap: 12px; }
+  nav .shield {
+    width: 38px; height: 38px; background: var(--amber); color: var(--ink);
+    display: grid; place-items: center;
+    font-family: 'Anton', sans-serif; font-size: 1.05rem;
+    border-radius: 4px; letter-spacing: -0.02em;
+  }
+  nav .brand-text { font-family: 'Archivo', sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; font-size: 1rem; color: var(--bone); }
+  nav .brand-text small { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--amber); letter-spacing: 0.18em; margin-top: 2px; font-weight: normal; }
+  nav ul { display: flex; gap: 28px; list-style: none; }
+  nav ul a { color: var(--bone); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; }
+  nav ul a:hover { color: var(--amber); }
+  @media (max-width: 780px) { nav ul { display: none; } nav { padding: 12px 18px; } }
+
+  /* ============= HERO ============= */
+  .hero {
+    min-height: 100vh; min-height: 100svh;
+    padding: 110px 28px 0;
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(ellipse 80% 60% at 80% 30%, rgba(255,174,0,0.08), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 10% 90%, rgba(255,107,26,0.06), transparent 60%),
+      var(--bg);
+    display: flex; flex-direction: column;
+  }
+  /* subtle scanline / grid */
+  .hero::before {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none; mask-image: linear-gradient(to bottom, black, transparent 90%);
+  }
+
+  .gantry-top {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 0; border-bottom: 1px solid var(--line);
+    flex-wrap: wrap; gap: 12px; position: relative;
+  }
+  .junction { display: inline-flex; align-items: center; gap: 14px; }
+  .junction-num {
+    background: var(--amber); color: var(--ink);
+    font-family: 'Anton', sans-serif; font-size: 0.95rem;
+    padding: 4px 12px; letter-spacing: 0.05em;
+  }
+  .junction-lbl { font-family: 'Archivo', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.78rem; color: var(--bone); }
+  .live { display: inline-flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-2); }
+  .live-dot { width: 9px; height: 9px; background: var(--amber); border-radius: 50%; box-shadow: 0 0 14px var(--amber-glow); animation: blink 1.6s ease-in-out infinite; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  .gantry-main {
+    flex: 1; position: relative;
+    display: grid; grid-template-columns: 1fr auto; gap: 60px;
+    align-items: center; padding: 60px 0;
+  }
+  .gantry-main h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(4rem, 14vw, 13rem);
+    line-height: 0.82; letter-spacing: -0.02em;
+    text-transform: uppercase; color: var(--bone);
+  }
+  .gantry-main h1 .small { display: block; font-size: 0.4em; letter-spacing: 0.02em; color: var(--amber); margin-bottom: 12px; }
+  .gantry-main h1 .arrow { display: inline-block; transform: translateY(-0.05em); margin-left: 0.15em; color: var(--amber); }
+
+  .route-shield {
+    width: clamp(140px, 16vw, 220px); aspect-ratio: 1;
+    background: var(--bg-2); color: var(--amber);
+    border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 3px var(--amber), 0 0 60px rgba(255,174,0,0.25);
+    position: relative;
+  }
+  .route-shield .top { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bone-2); margin-bottom: 4px; }
+  .route-shield .num { font-family: 'Anton', sans-serif; font-size: clamp(3rem, 6vw, 5rem); line-height: 0.9; text-shadow: 0 0 18px var(--amber-glow); }
+  .route-shield .bot { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-2); margin-top: 4px; }
+  @media (max-width: 780px) {
+    .gantry-main { grid-template-columns: 1fr; gap: 30px; padding: 40px 0; }
+    .route-shield { justify-self: start; width: 130px; }
+  }
+
+  .gantry-bottom {
+    border-top: 1px solid var(--line);
+    padding: 18px 0;
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 28px; align-items: center;
+    position: relative;
+  }
+  .gantry-bottom .item { display: flex; flex-direction: column; gap: 4px; }
+  .gantry-bottom .k { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--amber); text-transform: uppercase; }
+  .gantry-bottom .v { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.02em; color: var(--bone); }
+  @media (max-width: 780px) { .gantry-bottom { grid-template-columns: 1fr; gap: 14px; padding: 14px 0; } }
+
+  .lanes {
+    height: 80px; position: relative;
+    background: #15171c; margin: 0 -28px;
+    border-top: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .lane-line {
+    position: absolute; top: 50%; left: 0; right: 0;
+    height: 5px; transform: translateY(-50%);
+    background: repeating-linear-gradient(90deg, var(--amber) 0 70px, transparent 70px 150px);
+    animation: roll 1.2s linear infinite;
+    opacity: 0.85;
+  }
+  .lane-line.solid {
+    background: var(--bone-2); opacity: 0.18; height: 2px; top: 20%;
+    animation: none;
+  }
+  .lane-line.solid.bot { top: 80%; }
+  @keyframes roll { from { background-position: 0 0; } to { background-position: -150px 0; } }
+
+  /* ============= VMS DASHBOARD ============= */
+  .vms-wrap { background: var(--bg); padding: 60px 28px; }
+  .vms {
+    max-width: 1320px; margin: 0 auto;
+    background: #06080b; border: 1px solid var(--line);
+    border-radius: 6px; padding: 32px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+    box-shadow: inset 0 0 80px rgba(255,174,0,0.05), 0 12px 40px rgba(0,0,0,0.5);
+  }
+  .vms::before {
+    content: ""; position: absolute; inset: 8px;
+    border: 1px solid rgba(255,174,0,0.18); pointer-events: none; border-radius: 2px;
+  }
+  .vms-cell { padding: 10px 24px; border-right: 1px dashed rgba(255,174,0,0.18); }
+  .vms-cell:last-child { border-right: none; }
+  .vms-cell .lbl { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,174,0,0.75); margin-bottom: 10px; }
+  .vms-cell .val {
+    font-family: 'Anton', sans-serif; font-size: 2.2rem; color: var(--amber);
+    line-height: 1; font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 12px var(--amber-glow), 0 0 24px rgba(255,174,0,0.4);
+    letter-spacing: 0.03em;
+  }
+  .vms-cell .sub { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: rgba(255,174,0,0.55); margin-top: 6px; letter-spacing: 0.12em; text-transform: uppercase; }
+  @media (max-width: 780px) {
+    .vms { grid-template-columns: repeat(2, 1fr); padding: 20px; }
+    .vms-cell { padding: 16px; border-right: none; border-bottom: 1px dashed rgba(255,174,0,0.18); }
+    .vms-cell:nth-last-child(-n+2) { border-bottom: none; }
+    .vms-cell:nth-child(odd) { border-right: 1px dashed rgba(255,174,0,0.18); }
+    .vms-cell .val { font-size: 1.8rem; }
+  }
+
+  /* ============= SERVICES / ABOUT (bone paper) ============= */
+  .services { background: var(--bone); color: var(--ink); padding: 120px 28px; }
+  .services-inner { max-width: 1320px; margin: 0 auto; }
+  .section-head { display: grid; grid-template-columns: auto 1fr; gap: 60px; align-items: end; margin-bottom: 80px; padding-bottom: 24px; border-bottom: 2px solid var(--ink); }
+  .section-head .label {
+    background: var(--ink); color: var(--amber);
+    padding: 10px 18px; font-family: 'Archivo', sans-serif; font-weight: 900;
+    letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.85rem;
+    align-self: start; white-space: nowrap;
+  }
+  .section-head h2 {
+    font-family: 'Anton', sans-serif; font-size: clamp(2.8rem, 7vw, 6rem);
+    line-height: 0.9; text-transform: uppercase; letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .section-head h2 .accent { color: var(--hi-vis); }
+  @media (max-width: 780px) { .section-head { grid-template-columns: 1fr; gap: 16px; } }
+
+  .services-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 80px; }
+  .services-grid p { font-size: 1.1rem; line-height: 1.7; color: var(--ink); margin-bottom: 20px; }
+  .services-grid p:last-child { color: var(--ash); font-size: 1rem; }
+
+  .manifest {
+    background: #fdfaf0; border: 2px solid var(--ink);
+    padding: 0; position: relative;
+  }
+  .manifest-head {
+    background: var(--ink); color: var(--amber);
+    padding: 16px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Archivo', sans-serif; font-weight: 700; letter-spacing: 0.08em;
+    font-size: 0.82rem; text-transform: uppercase;
+  }
+  .manifest-head .code { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; color: var(--bone-2); }
+  .manifest-body { padding: 8px 24px; }
+  .manifest .row { display: grid; grid-template-columns: 1fr auto; padding: 14px 0; border-bottom: 1px dashed rgba(10,12,16,0.2); align-items: center; }
+  .manifest .row:last-child { border-bottom: none; }
+  .manifest .k { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--ash); text-transform: uppercase; letter-spacing: 0.1em; }
+  .manifest .v { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.02em; color: var(--ink); }
+  .manifest .v.hi { color: var(--hi-vis); }
+  .manifest .stamp {
+    position: absolute; top: 70px; right: -10px;
+    transform: rotate(8deg);
+    border: 3px solid var(--hi-vis); color: var(--hi-vis);
+    font-family: 'Archivo', sans-serif; font-weight: 900;
+    padding: 8px 14px; font-size: 0.95rem; letter-spacing: 0.1em;
+    background: rgba(253,250,240,0.95);
+    text-transform: uppercase;
+    box-shadow: 2px 2px 0 var(--hi-vis);
+  }
+  @media (max-width: 900px) { .services-grid { grid-template-columns: 1fr; gap: 40px; } .manifest .stamp { display: none; } }
+
+  /* ============= PARTNERS (dark) ============= */
+  .partners {
+    background: var(--bg); color: var(--bone);
+    padding: 120px 28px;
+    position: relative; overflow: hidden;
+  }
+  .partners::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+    background: repeating-linear-gradient(90deg, var(--amber) 0 40px, transparent 40px 80px);
+  }
+  .partners-inner { max-width: 1320px; margin: 0 auto; position: relative; z-index: 2; }
+  .partners .section-head { border-bottom-color: var(--line); }
+  .partners .section-head .label { background: var(--amber); color: var(--ink); }
+  .partners .section-head h2 { color: var(--bone); }
+  .partners .section-head h2 .accent { color: var(--amber); }
+
+  .partner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .partner-sign {
+    border: 1px solid var(--line); background: var(--bg-2);
+    padding: 36px 32px 32px; position: relative;
+    transition: transform .25s ease, border-color .25s ease, background .25s ease;
+    overflow: hidden;
+  }
+  .partner-sign:hover { transform: translateY(-6px); border-color: var(--amber); background: var(--bg-3); }
+  .partner-sign::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0;
+    height: 4px; background: var(--amber);
+    transform: scaleX(0); transform-origin: left; transition: transform .35s ease;
+  }
+  .partner-sign:hover::before { transform: scaleX(1); }
+  .partner-sign .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--amber); color: var(--ink);
+    padding: 6px 12px; font-family: 'Archivo', sans-serif; font-weight: 900;
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 24px;
+  }
+  .partner-sign .badge::before { content: ""; width: 8px; height: 8px; background: var(--ink); border-radius: 50%; }
+  .partner-sign h3 {
+    font-family: 'Anton', sans-serif; font-size: clamp(2rem, 4vw, 3.2rem);
+    text-transform: uppercase; letter-spacing: -0.01em; line-height: 0.95; margin-bottom: 18px;
+    color: var(--bone);
+  }
+  .partner-sign p { color: var(--bone-2); font-size: 1rem; line-height: 1.65; margin-bottom: 28px; }
+  .partner-sign .cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: 'Archivo', sans-serif; font-weight: 900;
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--amber);
+  }
+  .partner-sign .cta svg { transition: transform .25s ease; }
+  .partner-sign .cta:hover svg { transform: translateX(8px); }
+  .partner-sign .cta:hover { color: var(--hi-vis); }
+  .partner-links { display: flex; flex-wrap: wrap; gap: 14px 28px; }
+  @media (max-width: 820px) { .partner-grid { grid-template-columns: 1fr; } }
+
+  /* ============= FLEET PROFILE ============= */
+  .fleet {
+    background: var(--bg); color: var(--bone);
+    padding: 120px 28px;
+    border-top: 1px solid var(--line);
+  }
+  .fleet-inner { max-width: 1320px; margin: 0 auto; }
+  .fleet .section-head { border-bottom-color: var(--line); }
+  .fleet .section-head .label { background: var(--amber); color: var(--ink); }
+  .fleet .section-head h2 { color: var(--bone); }
+  .fleet .section-head h2 .accent { color: var(--amber); }
+
+  .fleet-card {
+    background: var(--bg-2); border: 1px solid var(--line);
+    display: grid; grid-template-columns: 1fr 1.3fr; gap: 0;
+    position: relative; overflow: hidden;
+  }
+  .fleet-card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0;
+    height: 4px; background: var(--amber);
+  }
+  .fleet-left {
+    padding: 48px 40px; border-right: 1px solid var(--line);
+    background:
+      radial-gradient(ellipse 70% 60% at 20% 10%, rgba(255,174,0,0.08), transparent 70%),
+      var(--bg-2);
+  }
+  .fleet-left .tag {
+    display: inline-block; background: var(--amber); color: var(--ink);
+    padding: 6px 12px; font-family: 'Archivo', sans-serif; font-weight: 900;
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 24px;
+  }
+  .fleet-left h3 {
+    font-family: 'Anton', sans-serif; font-size: clamp(2rem, 4vw, 3rem);
+    text-transform: uppercase; line-height: 0.95; letter-spacing: -0.01em; margin-bottom: 18px;
+  }
+  .fleet-left p { color: var(--bone-2); font-size: 1rem; line-height: 1.65; margin-bottom: 32px; }
+  .fleet-btn {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 16px 28px; background: var(--amber); color: var(--ink);
+    font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 0.85rem;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    border: 2px solid var(--amber); transition: all .2s ease;
+  }
+  .fleet-btn:hover { background: var(--hi-vis); border-color: var(--hi-vis); transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+  .fleet-btn svg { transition: transform .25s ease; }
+  .fleet-btn:hover svg { transform: translateX(6px); }
+
+  .fleet-right { padding: 48px 40px; }
+  .fleet-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px 40px; margin-bottom: 32px; }
+  .stat .lbl { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; }
+  .stat .val { font-family: 'Anton', sans-serif; font-size: 2rem; color: var(--bone); line-height: 1; }
+  .stat .sub { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--ash); margin-top: 6px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .fleet-url {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px; background: var(--bg); border: 1px dashed var(--line);
+    font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--bone-2);
+    letter-spacing: 0.04em; word-break: break-all;
+  }
+  .fleet-url::before { content: "▶"; color: var(--amber); }
+  @media (max-width: 820px) {
+    .fleet-card { grid-template-columns: 1fr; }
+    .fleet-left { border-right: none; border-bottom: 1px solid var(--line); padding: 36px 28px; }
+    .fleet-right { padding: 36px 28px; }
+  }
+
+  /* ============= RECRUITMENT (hi-vis roadworks) ============= */
+  .recruit { background: var(--bone); color: var(--ink); padding: 120px 28px; }
+  .recruit-panel {
+    max-width: 1320px; margin: 0 auto; position: relative;
+    background: var(--amber); color: var(--ink);
+    padding: 80px 40px 90px; text-align: center;
+    border: 4px solid var(--ink);
+  }
+  .recruit-panel::before, .recruit-panel::after {
+    content: ""; position: absolute; left: -4px; right: -4px; height: 18px;
+    background: repeating-linear-gradient(45deg, var(--ink) 0 18px, var(--amber) 18px 36px);
+  }
+  .recruit-panel::before { top: -22px; }
+  .recruit-panel::after { bottom: -22px; }
+  .recruit-panel .vacancy {
+    display: inline-block; background: var(--ink); color: var(--amber);
+    padding: 8px 18px; font-family: 'Archivo', sans-serif; font-weight: 900;
+    letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.82rem; margin-bottom: 32px;
+  }
+  .recruit-panel h2 {
+    font-family: 'Anton', sans-serif; font-size: clamp(3rem, 9vw, 8rem);
+    text-transform: uppercase; line-height: 0.85; letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .recruit-panel h2 .accent { color: var(--hi-vis); }
+  .recruit-panel p { max-width: 560px; margin: 28px auto 0; font-size: 1.1rem; line-height: 1.7; color: var(--ink); }
+  .reqs { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin: 40px 0 48px; }
+  .req {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink); padding: 8px 14px; background: var(--bone); border: 2px solid var(--ink);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .req .n { font-family: 'Anton', sans-serif; font-size: 0.9rem; color: var(--hi-vis); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 20px 40px; background: var(--ink); color: var(--amber);
+    font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 1.05rem;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    border: 4px solid var(--ink); cursor: pointer; transition: all .2s ease;
+  }
+  .btn:hover { background: var(--hi-vis); color: var(--ink); transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--ink); }
+
+  /* ============= FOOTER ============= */
+  footer {
+    background: #06080b; color: var(--bone);
+    padding: 80px 28px 40px;
+    border-top: 1px solid var(--line);
+    position: relative;
+  }
+  footer::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: repeating-linear-gradient(90deg, var(--amber) 0 40px, transparent 40px 80px);
+  }
+  .footer-inner { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; }
+  .footer-brand { display: flex; flex-direction: column; gap: 20px; }
+  .footer-brand .logo-row { display: flex; align-items: center; gap: 14px; }
+  .footer-brand h4 { font-family: 'Anton', sans-serif; font-size: 2.2rem; text-transform: uppercase; letter-spacing: -0.01em; color: var(--bone); }
+  .footer-brand p { color: var(--ash); max-width: 320px; font-size: 0.92rem; line-height: 1.6; }
+  .footer-col h5 { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--amber); margin-bottom: 20px; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { padding: 6px 0; font-size: 0.88rem; color: var(--bone-2); }
+  .footer-col li a { color: var(--bone-2); }
+  .footer-col li a:hover { color: var(--amber); }
+  .footer-bottom {
+    max-width: 1320px; margin: 60px auto 0; padding-top: 28px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  .footer-bottom span { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--ash); letter-spacing: 0.12em; }
+  @media (max-width: 820px) { .footer-inner { grid-template-columns: 1fr 1fr; } .footer-brand { grid-column: 1 / -1; } }
+  @media (max-width: 480px) { .footer-inner { grid-template-columns: 1fr; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lane-line, .live-dot { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">
+    <div class="shield">ST</div>
+    <div class="brand-text">
+      Scott's Transport
+      <small>EST · 2024 · UK</small>
+    </div>
+  </div>
+  <ul>
+    <li><a href="#about">Services</a></li>
+    <li><a href="#partners">Partners</a></li>
+    <li><a href="#fleet">Fleet</a></li>
+    <li><a href="#recruit">Recruit</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ============= HERO ============= -->
+<header class="hero">
+  <div class="gantry-top">
+    <div class="junction">
+      <span class="junction-num">J 01</span>
+      <span class="junction-lbl">▶ Approaching Scott's Transport</span>
+    </div>
+    <div class="live">
+      <span class="live-dot"></span>
+      <span>Operations active</span>
+    </div>
+  </div>
+
+  <div class="gantry-main">
+    <h1>
+      <span class="small">Long Haul Operations</span>
+      Scott's<br>Transport<span class="arrow">→</span>
+    </h1>
+    <div class="route-shield">
+      <div class="top">Route</div>
+      <div class="num">M1</div>
+      <div class="bot">Scott's · UK</div>
+    </div>
+  </div>
+
+  <div class="gantry-bottom">
+    <div class="item">
+      <span class="k">Operation</span>
+      <span class="v">Virtual Trucking Co. · Singleplayer freight ops</span>
+    </div>
+    <div class="item">
+      <span class="k">Tracker</span>
+      <span class="v">MileVox JobTracker</span>
+    </div>
+    <div class="item">
+      <span class="k">Next exit</span>
+      <span class="v">↓ Services · 0.5 mi</span>
+    </div>
+  </div>
+
+  <div class="lanes">
+    <div class="lane-line solid"></div>
+    <div class="lane-line"></div>
+    <div class="lane-line solid bot"></div>
+  </div>
+</header>
+
+<!-- ============= VMS DASHBOARD ============= -->
+<div class="vms-wrap">
+  <div class="vms">
+    <div class="vms-cell">
+      <div class="lbl">▶ Drivers</div>
+      <div class="val" id="drivers-val">—</div>
+      <div class="sub">on the books · live</div>
+    </div>
+    <div class="vms-cell">
+      <div class="lbl">▶ Trainees</div>
+      <div class="val" id="trainees-val">—</div>
+      <div class="sub">in training · live</div>
+    </div>
+    <div class="vms-cell">
+      <div class="lbl">▶ Status</div>
+      <div class="val">ACTIVE</div>
+      <div class="sub">fleet on the road</div>
+    </div>
+    <div class="vms-cell">
+      <div class="lbl">▶ Recruiting</div>
+      <div class="val">OPEN</div>
+      <div class="sub">accepting drivers</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============= SERVICES / ABOUT ============= -->
+<section class="services" id="about">
+  <div class="services-inner">
+    <div class="section-head">
+      <span class="label">J 02 · Services</span>
+      <h2>Clean miles.<br><span class="accent">Tight outfit.</span></h2>
+    </div>
+
+    <div class="services-grid">
+      <div>
+        <p>Scott's Transport runs singleplayer freight ops across Europe — every job logged, timed, and rated through MileVox JobTracker. No multiplayer chaos, no leaderboard farmers, no convoy carnage at junctions.</p>
+        <p>It's a proper haulier set-up in miniature. Disciplined dispatch, real schedules, themed runs, and a sub-contracted operator picking up overflow when the fleet's already on the road.</p>
+        <p>If you care more about the drive than the drama — pulling into a depot at 3am with a clean delivery on the dot — you're in the right cab.</p>
+      </div>
+      <div class="manifest">
+        <div class="manifest-head">
+          <span>Driver Log</span>
+          <span class="code">SCT-001 / 2026</span>
+        </div>
+        <div class="manifest-body">
+          <div class="row"><span class="k">Founded</span><span class="v">2024</span></div>
+          <div class="row"><span class="k">Base</span><span class="v">United Kingdom</span></div>
+          <div class="row"><span class="k">Platform</span><span class="v">ETS2 Singleplayer</span></div>
+          <div class="row"><span class="k">Job tracker</span><span class="v hi">MileVox</span></div>
+          <div class="row"><span class="k">Sub-contractor</span><span class="v">K.J Evan's &amp; Son's</span></div>
+          <div class="row"><span class="k">Status</span><span class="v hi">● Recruiting</span></div>
+        </div>
+        <div class="stamp">Approved</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= PARTNERS ============= -->
+<section class="partners" id="partners">
+  <div class="partners-inner">
+    <div class="section-head">
+      <span class="label">J 03 · Partners</span>
+      <h2>Who we<br><span class="accent">run with.</span></h2>
+    </div>
+
+    <div class="partner-grid">
+      <div class="partner-sign">
+        <span class="badge">Official Job Tracker</span>
+        <h3>MileVox<br>JobTracker</h3>
+        <p>Every load we haul gets logged through MileVox — distance, fuel, damage, delivery time. If it isn't tracked, it didn't happen. It's the source of truth for everything on the fleet's books.</p>
+        <div class="partner-links">
+          <a href="https://milevox.app/" target="_blank" rel="noopener" class="cta">
+            milevox.app
+            <svg width="18" height="12" viewBox="0 0 16 10" fill="none"><path d="M0 5h14M9 1l5 4-5 4" stroke="currentColor" stroke-width="2"/></svg>
+          </a>
+          <a href="https://discord.gg/milevox" target="_blank" rel="noopener" class="cta">
+            Discord
+            <svg width="18" height="12" viewBox="0 0 16 10" fill="none"><path d="M0 5h14M9 1l5 4-5 4" stroke="currentColor" stroke-width="2"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="partner-sign">
+        <span class="badge">Sub-contracted Haulier</span>
+        <h3>K.J Evan's<br>&amp; Son's</h3>
+        <p>When Scott's is at capacity, KJ Evan's &amp; Son's takes the overflow. A trusted second outfit running the same standards, the same tracker, the same disciplined dispatch we do.</p>
+        <div class="partner-links">
+          <a href="https://discord.gg/sNVxkFgHku" target="_blank" rel="noopener" class="cta">
+            Discord
+            <svg width="18" height="12" viewBox="0 0 16 10" fill="none"><path d="M0 5h14M9 1l5 4-5 4" stroke="currentColor" stroke-width="2"/></svg>
+          </a>
+          <a href="https://milevox.app/vtc/K.J%20EVANS%20%26%20SONS" target="_blank" rel="noopener" class="cta">
+            MileVox profile
+            <svg width="18" height="12" viewBox="0 0 16 10" fill="none"><path d="M0 5h14M9 1l5 4-5 4" stroke="currentColor" stroke-width="2"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= FLEET PROFILE ============= -->
+<section class="fleet" id="fleet">
+  <div class="fleet-inner">
+    <div class="section-head">
+      <span class="label">J 04 · Our Fleet</span>
+      <h2>Tracked &amp; logged on<br><span class="accent">MileVox.</span></h2>
+    </div>
+
+    <div class="fleet-card">
+      <div class="fleet-left">
+        <span class="tag">Public Profile</span>
+        <h3>Scott's Transport<br>on MileVox</h3>
+        <p>Every job, every mile, every delivery — recorded and publicly viewable. Check our standing, browse the driver leaderboard, and see what the fleet's been hauling.</p>
+        <a href="https://milevox.app/vtc/Scott's%20Transport" target="_blank" rel="noopener" class="fleet-btn">
+          View our profile
+          <svg width="18" height="12" viewBox="0 0 16 10" fill="none"><path d="M0 5h14M9 1l5 4-5 4" stroke="currentColor" stroke-width="2"/></svg>
+        </a>
+      </div>
+      <div class="fleet-right">
+        <div class="fleet-stats">
+          <div class="stat">
+            <div class="lbl">▶ Platform</div>
+            <div class="val">MileVox</div>
+            <div class="sub">official tracker</div>
+          </div>
+          <div class="stat">
+            <div class="lbl">▶ Game</div>
+            <div class="val">ETS2</div>
+            <div class="sub">singleplayer</div>
+          </div>
+          <div class="stat">
+            <div class="lbl">▶ Base</div>
+            <div class="val">UK</div>
+            <div class="sub">United Kingdom</div>
+          </div>
+          <div class="stat">
+            <div class="lbl">▶ Standing</div>
+            <div class="val">ACTIVE</div>
+            <div class="sub">recruiting drivers</div>
+          </div>
+        </div>
+        <div class="fleet-url">milevox.app/vtc/Scott's Transport</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= RECRUITMENT ============= -->
+<section class="recruit" id="recruit">
+  <div class="recruit-panel">
+    <span class="vacancy">⚠ Driver Vacancies — Now Open</span>
+    <h2>Get in<br><span class="accent">the cab.</span></h2>
+    <p>We've got slots open. Keep a clean run, log your jobs, turn up on Discord — you can drive for us.</p>
+    <div class="reqs">
+      <div class="req"><span class="n">01</span> ETS2 + DLC</div>
+      <div class="req"><span class="n">02</span> MileVox account</div>
+      <div class="req"><span class="n">03</span> 16+ / clean driver</div>
+      <div class="req"><span class="n">04</span> Discord active</div>
+    </div>
+    <a href="https://discord.gg/vTJhwhSs8Z" target="_blank" rel="noopener" class="btn">
+      Start application
+      <svg width="20" height="14" viewBox="0 0 16 10" fill="none"><path d="M0 5h14M9 1l5 4-5 4" stroke="currentColor" stroke-width="2"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============= FOOTER ============= -->
+<footer id="contact">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo-row">
+        <div class="shield" style="width: 44px; height: 44px; font-size: 1.2rem; background: var(--amber); color: var(--ink); display: grid; place-items: center; font-family: 'Anton', sans-serif; border-radius: 4px;">ST</div>
+        <h4>Scott's Transport</h4>
+      </div>
+      <p>A singleplayer virtual trucking company. Tracked jobs, long hauls, no nonsense. Running since 2024 out of the UK.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Dispatch</h5>
+      <ul>
+        <li>Discord: <a href="https://discord.gg/vTJhwhSs8Z" target="_blank" rel="noopener">@scottstransport</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Operations</h5>
+      <ul>
+        <li><a href="https://milevox.app/vtc/Scott's%20Transport" target="_blank" rel="noopener">MileVox Profile</a></li>
+        <li><a href="https://discord.gg/sNVxkFgHku" target="_blank" rel="noopener">K.J Evan's &amp; Son's</a></li>
+        <li><a href="https://discord.gg/milevox" target="_blank" rel="noopener">MileVox Community</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Standing</h5>
+      <ul>
+        <li>● Recruiting open</li>
+        <li>● Fleet: active</li>
+        <li>● Status: nominal</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Scott's Transport · All hauls reserved</span>
+    <span>SCT-OPS-2026 · SP-ONLY</span>
+  </div>
+</footer>
+
+<script>
+  const BOT_API = "https://vtc-bot-wc9z8q.fly.dev/drivers.json";
+
+  function animateCount(el, target, duration = 1600) {
+    const start = performance.now();
+    function frame(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.floor(target * eased);
+      if (t < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  async function loadDriverCount() {
+    const driversEl = document.getElementById("drivers-val");
+    const traineesEl = document.getElementById("trainees-val");
+    const ctrl = new AbortController();
+    const timeout = setTimeout(() => ctrl.abort(), 12000);
+
+    try {
+      const res = await fetch(BOT_API, { signal: ctrl.signal });
+      clearTimeout(timeout);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      animateCount(driversEl, Number(data.drivers) || 0);
+      animateCount(traineesEl, Number(data.trainees) || 0);
+    } catch (err) {
+      console.warn("Driver count fetch failed:", err);
+      driversEl.textContent = "—";
+      traineesEl.textContent = "—";
+    }
+  }
+
+  window.addEventListener("load", loadDriverCount);
+</script>
+
+</body>
+</html>
