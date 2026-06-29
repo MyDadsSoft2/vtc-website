@@ -3,30 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#101418" />
-  <title>Scott's Transport — Virtual Trucking Co.</title>
+  <meta name="theme-color" content="#0b1117" />
+  <title>Scott's Transport — Virtual Trucking Company</title>
   <style>
     :root {
-      --bg: #101418;
-      --bg-2: #151b21;
-      --panel: #1b232a;
-      --panel-2: #202a32;
-      --card: #f2eee5;
-      --card-2: #e7dfd1;
-      --ink: #141312;
-      --text: #f4efe6;
-      --muted: #b7b0a5;
-      --faint: #7f8790;
-      --line: #303a42;
-      --line-soft: rgba(255,255,255,.08);
-      --amber: #d99a24;
-      --amber-2: #f0b644;
-      --orange: #cc6f2b;
-      --green: #78a878;
-      --red: #b95a4f;
-      --max: 1200px;
-      --radius: 14px;
-      --shadow: 0 18px 45px rgba(0,0,0,.28);
+      --bg: #0b1117;
+      --bg-soft: #111922;
+      --surface: #16202b;
+      --surface-2: #1b2733;
+      --card: #f7f2e9;
+      --ink: #111827;
+      --text: #f6f0e7;
+      --muted: #aeb8c2;
+      --faint: #71808f;
+      --line: rgba(255,255,255,.11);
+      --accent: #e3a72f;
+      --accent-2: #ffcc5c;
+      --good: #78b77d;
+      --max: 1180px;
+      --radius: 18px;
+      --shadow: 0 22px 60px rgba(0,0,0,.32);
     }
 
     * { box-sizing: border-box; }
@@ -34,11 +30,12 @@
     body {
       margin: 0;
       background:
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px) 0 0 / 72px 72px,
-        linear-gradient(180deg, #0e1216 0%, #11171d 42%, #0f1419 100%);
+        radial-gradient(circle at top left, rgba(227,167,47,.14), transparent 34rem),
+        radial-gradient(circle at top right, rgba(74,111,150,.18), transparent 38rem),
+        linear-gradient(180deg, #0b1117 0%, #0d141b 45%, #090e13 100%);
       color: var(--text);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      line-height: 1.55;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
@@ -46,890 +43,297 @@
     a { color: inherit; text-decoration: none; }
     img { max-width: 100%; display: block; }
     button { font: inherit; }
+    h1, h2, h3, p { margin-top: 0; }
 
-    .wrap {
-      width: min(var(--max), calc(100% - 36px));
-      margin: 0 auto;
-    }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin-inline: auto; }
 
     .site-header {
       position: sticky;
       top: 0;
       z-index: 50;
-      background: rgba(16,20,24,.94);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--line-soft);
-    }
-
-    .site-header::after {
-      content: "";
-      display: block;
-      height: 3px;
-      background: repeating-linear-gradient(90deg, var(--amber) 0 42px, transparent 42px 84px);
-      opacity: .75;
+      background: rgba(11,17,23,.82);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
     }
 
     .nav {
-      min-height: 74px;
+      min-height: 76px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 26px;
+      gap: 24px;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      min-width: 230px;
-    }
-
+    .brand { display: inline-flex; align-items: center; gap: 13px; }
     .mark {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       display: grid;
       place-items: center;
-      background: var(--amber);
-      color: #111;
-      font-weight: 900;
-      letter-spacing: -.03em;
-      border: 2px solid rgba(0,0,0,.55);
-      box-shadow: 4px 4px 0 rgba(0,0,0,.32);
-      transform: skew(-4deg);
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #10151a;
+      font-weight: 950;
+      letter-spacing: -.04em;
+      box-shadow: 0 10px 25px rgba(227,167,47,.22);
     }
-
-    .brand strong {
+    .brand strong { display: block; font-size: .98rem; letter-spacing: .01em; }
+    .brand span:not(.mark) span {
       display: block;
-      font-size: 1rem;
-      letter-spacing: .02em;
-      text-transform: uppercase;
-    }
-
-    .brand span:not(.mark) {
-      display: block;
-      margin-top: 1px;
+      margin-top: 2px;
       color: var(--muted);
-      font-size: .72rem;
-      letter-spacing: .1em;
-      text-transform: uppercase;
+      font-size: .76rem;
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 3px;
-      list-style: none;
+      gap: 4px;
       margin: 0;
       padding: 0;
+      list-style: none;
     }
-
     .nav-links a {
       display: block;
-      padding: 10px 12px;
+      padding: 9px 12px;
       color: var(--muted);
-      font-size: .82rem;
+      font-size: .9rem;
       font-weight: 700;
-      letter-spacing: .03em;
       border-radius: 999px;
     }
-
     .nav-links a:hover,
-    .nav-links a:focus-visible {
-      color: var(--text);
-      background: rgba(255,255,255,.075);
-      outline: none;
-    }
+    .nav-links a:focus-visible { color: var(--text); background: rgba(255,255,255,.07); outline: none; }
 
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 82px 0 58px;
-      border-bottom: 1px solid var(--line-soft);
-      background:
-        radial-gradient(circle at 78% 20%, rgba(217,154,36,.14), transparent 30%),
-        linear-gradient(145deg, #192029 0%, #11171d 58%, #0c1115 100%);
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(115deg, transparent 0 56%, rgba(217,154,36,.09) 56% 57%, transparent 57% 100%),
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px) 0 0 / 64px 64px;
-      pointer-events: none;
-    }
-
+    .hero { padding: 96px 0 64px; }
     .hero-grid {
-      position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
-      gap: 42px;
+      grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr);
+      gap: 48px;
       align-items: center;
     }
 
-    .label {
+    .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 9px;
-      color: var(--amber-2);
-      font-size: .75rem;
-      font-weight: 900;
-      letter-spacing: .11em;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: var(--accent-2);
+      font-size: .82rem;
+      font-weight: 850;
+      letter-spacing: .08em;
       text-transform: uppercase;
     }
-
-    .label::before {
+    .eyebrow::before {
       content: "";
-      width: 9px;
-      height: 9px;
-      background: currentColor;
-      transform: rotate(45deg);
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--good);
+      box-shadow: 0 0 0 5px rgba(120,183,125,.14);
     }
-
-    h1, h2, h3, p { margin-top: 0; }
 
     h1 {
-      max-width: 830px;
-      margin: 18px 0 20px;
-      font-size: clamp(3.6rem, 8.3vw, 7.6rem);
-      line-height: .89;
-      letter-spacing: -.068em;
-      text-transform: uppercase;
+      max-width: 780px;
+      margin-bottom: 22px;
+      font-size: clamp(3.3rem, 8vw, 7.1rem);
+      line-height: .9;
+      letter-spacing: -.075em;
     }
-
     .lead {
-      max-width: 660px;
-      color: #d7d0c4;
-      font-size: clamp(1.02rem, 1.35vw, 1.18rem);
+      max-width: 680px;
+      color: #d8e0e8;
+      font-size: clamp(1.06rem, 1.4vw, 1.24rem);
     }
 
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 30px;
-    }
-
-    .btn,
-    .btn-secondary,
-    .small-link {
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .btn, .btn-secondary, .small-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       min-height: 46px;
-      padding: 0 19px;
+      padding: 0 18px;
+      border-radius: 999px;
       border: 1px solid var(--line);
-      font-weight: 900;
-      font-size: .85rem;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-      border-radius: 4px;
-      transition: transform .16s ease, background .16s ease, border-color .16s ease, color .16s ease;
+      font-weight: 850;
+      font-size: .9rem;
+      transition: transform .16s ease, background .16s ease, border-color .16s ease;
     }
+    .btn { background: var(--accent); border-color: transparent; color: #11161b; box-shadow: 0 14px 30px rgba(227,167,47,.18); }
+    .btn:hover { transform: translateY(-2px); background: var(--accent-2); }
+    .btn-secondary, .small-link { color: var(--text); background: rgba(255,255,255,.045); }
+    .btn-secondary:hover, .small-link:hover { transform: translateY(-2px); border-color: rgba(255,204,92,.55); background: rgba(255,255,255,.075); }
 
-    .btn {
-      background: var(--amber);
-      border-color: var(--amber);
-      color: #12100d;
-      box-shadow: 4px 4px 0 rgba(0,0,0,.35);
-    }
-
-    .btn:hover { background: var(--amber-2); transform: translate(-2px,-2px); }
-
-    .btn-secondary {
-      color: var(--text);
-      background: rgba(255,255,255,.03);
-      border-color: rgba(255,255,255,.16);
-    }
-
-    .btn-secondary:hover,
-    .small-link:hover {
-      background: var(--panel-2);
-      border-color: rgba(217,154,36,.7);
-    }
-
-    .yard-strip {
-      margin-top: 42px;
-      height: 56px;
-      overflow: hidden;
-      background: #181c21;
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 8px;
-      position: relative;
-    }
-
-    .yard-strip::before,
-    .yard-strip::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: rgba(255,255,255,.14);
-    }
-
-    .yard-strip::before { top: 15px; }
-    .yard-strip::after { bottom: 15px; }
-
-    .yard-line {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 50%;
-      height: 5px;
-      transform: translateY(-50%);
-      background: repeating-linear-gradient(90deg, var(--amber) 0 58px, transparent 58px 118px);
-      animation: roadMove 1.9s linear infinite;
-      opacity: .9;
-    }
-
-    @keyframes roadMove { to { background-position: -118px 0; } }
-
-    .ops-card {
-      border: 1px solid rgba(255,255,255,.13);
-      background: linear-gradient(180deg, rgba(35,45,54,.98), rgba(25,32,39,.98));
+    .hero-card {
+      background: linear-gradient(180deg, rgba(27,39,51,.92), rgba(17,25,34,.92));
+      border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       overflow: hidden;
     }
-
-    .ops-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      padding: 20px;
-      border-bottom: 1px solid var(--line-soft);
-      background:
-        linear-gradient(90deg, rgba(217,154,36,.12), transparent),
-        rgba(255,255,255,.03);
-    }
-
-    .ops-head strong {
-      display: block;
-      font-size: 1.02rem;
-      text-transform: uppercase;
-      letter-spacing: .03em;
-    }
-
-    .ops-head span {
-      display: block;
-      margin-top: 3px;
-      color: var(--muted);
-      font-size: .78rem;
-    }
-
-    .live {
+    .hero-card-top { padding: 24px; border-bottom: 1px solid var(--line); }
+    .status-pill {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      align-self: start;
-      color: #d8d0c5;
-      font-size: .72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      white-space: nowrap;
+      gap: 9px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(120,183,125,.11);
+      color: #cce8ce;
+      font-size: .78rem;
+      font-weight: 850;
     }
-
-    .live-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 0 4px rgba(120,168,120,.13);
-      animation: pulse 1.8s ease-in-out infinite;
-    }
-
-    @keyframes pulse { 50% { opacity: .55; transform: scale(.9); } }
-
-    .ops-table { padding: 8px 20px 20px; }
-    .ops-row {
+    .status-pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--good); }
+    .hero-card h2 { margin: 18px 0 8px; font-size: 1.55rem; letter-spacing: -.03em; }
+    .hero-card p { color: var(--muted); margin-bottom: 0; }
+    .summary-list { padding: 10px 24px 24px; }
+    .summary-row {
       display: grid;
-      grid-template-columns: .95fr 1.35fr;
+      grid-template-columns: 120px minmax(0, 1fr);
       gap: 16px;
       padding: 15px 0;
-      border-bottom: 1px dashed rgba(255,255,255,.14);
+      border-bottom: 1px solid var(--line);
     }
-    .ops-row:last-child { border-bottom: 0; }
-    .ops-row span {
-      color: var(--faint);
-      font-size: .76rem;
-      font-weight: 800;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-    .ops-row b { color: var(--text); font-size: .92rem; }
-    .highlight { color: var(--amber-2) !important; }
+    .summary-row:last-child { border-bottom: 0; }
+    .summary-row span { color: var(--faint); font-size: .8rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+    .summary-row b { font-size: .96rem; }
 
-    .stats-band {
-      padding: 28px 0;
-      background: #0c1014;
-      border-bottom: 1px solid var(--line-soft);
+    .stats-band { padding: 26px 0 58px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .stat-card {
+      min-height: 126px;
+      padding: 22px;
+      background: rgba(22,32,43,.78);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
     }
+    .stat-card .lbl { color: var(--muted); font-size: .78rem; font-weight: 850; text-transform: uppercase; letter-spacing: .07em; }
+    .stat-card .val { margin-top: 9px; color: var(--accent-2); font-size: clamp(2rem, 4vw, 3rem); line-height: 1; font-weight: 950; letter-spacing: -.05em; font-variant-numeric: tabular-nums; }
+    .stat-card .sub { margin-top: 9px; color: var(--faint); font-size: .82rem; }
 
-    .vms {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
+    .section { padding: 88px 0; border-top: 1px solid var(--line); }
+    .section.light { background: var(--card); color: var(--ink); border-top: 0; }
+    .section-head { max-width: 780px; margin-bottom: 36px; }
+    .section-head h2 { margin-bottom: 10px; font-size: clamp(2.2rem, 5vw, 4.65rem); line-height: .96; letter-spacing: -.06em; }
+    .section-head p { color: color-mix(in srgb, currentColor 70%, transparent); font-size: 1.05rem; }
+    .section.light .eyebrow { color: #8a5d09; }
 
-    .vms-cell {
-      min-height: 132px;
-      padding: 22px 20px;
-      background: #151b20;
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: 10px;
-      box-shadow: inset 0 3px 0 rgba(217,154,36,.75);
+    .split { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(300px, .75fr); gap: 42px; align-items: start; }
+    .copy p { max-width: 760px; color: color-mix(in srgb, currentColor 78%, transparent); font-size: 1.05rem; }
+    .note-card {
+      background: #fffaf1;
+      border: 1px solid rgba(17,24,39,.12);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 45px rgba(17,24,39,.12);
+      overflow: hidden;
     }
-
-    .vms-cell .lbl {
-      color: var(--muted);
-      font-size: .72rem;
-      font-weight: 900;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .vms-cell .val {
-      color: var(--amber-2);
-      font-size: clamp(2rem, 4vw, 3.1rem);
-      line-height: 1;
-      font-weight: 900;
-      letter-spacing: -.04em;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .vms-cell .sub {
-      margin-top: 8px;
-      color: var(--faint);
-      font-size: .74rem;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-    }
-
-    .section {
-      padding: 92px 0;
-      border-bottom: 1px solid var(--line-soft);
-      background: var(--bg);
-    }
-
-    .section.light {
-      background:
-        linear-gradient(90deg, rgba(20,19,18,.04) 1px, transparent 1px) 0 0 / 54px 54px,
-        var(--card);
-      color: var(--ink);
-      border-bottom: 0;
-    }
-
-    .section-head {
-      display: grid;
-      grid-template-columns: 190px minmax(0, 1fr);
-      gap: 38px;
-      align-items: end;
-      margin-bottom: 42px;
-      padding-bottom: 22px;
-      border-bottom: 2px solid currentColor;
-    }
-
-    .section:not(.light) .section-head { color: var(--text); border-bottom-color: rgba(255,255,255,.16); }
-    .section-head h2 {
-      margin: 0;
-      font-size: clamp(2.25rem, 5.2vw, 5.15rem);
-      line-height: .94;
-      letter-spacing: -.055em;
-      text-transform: uppercase;
-    }
-
-    .split {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
-      gap: 44px;
-      align-items: start;
-    }
-
-    .copy p {
-      font-size: 1.04rem;
-      color: color-mix(in srgb, currentColor 82%, transparent);
-      max-width: 760px;
-    }
-
-    .manifest {
-      background: #fbf7ec;
-      border: 2px solid #151515;
-      color: var(--ink);
-      border-radius: 4px;
-      box-shadow: 8px 8px 0 rgba(20,19,18,.16);
-      transform: rotate(.4deg);
-    }
-
-    .manifest-title {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 16px 18px;
-      background: #151515;
-      color: var(--amber-2);
-      font-size: .78rem;
-      font-weight: 900;
-      letter-spacing: .09em;
-      text-transform: uppercase;
-    }
-
-    .manifest-body { padding: 8px 18px 16px; }
-    .meta-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 14px;
-      padding: 13px 0;
-      border-bottom: 1px dashed rgba(20,19,18,.22);
-    }
+    .note-title { padding: 18px 20px; background: #111827; color: #ffcf68; font-weight: 900; display: flex; justify-content: space-between; gap: 16px; }
+    .note-body { padding: 8px 20px 18px; }
+    .meta-row { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 13px 0; border-bottom: 1px solid rgba(17,24,39,.1); }
     .meta-row:last-child { border-bottom: 0; }
-    .meta-row span {
-      color: rgba(20,19,18,.6);
-      font-size: .76rem;
-      font-weight: 900;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-    .meta-row b { font-size: .9rem; text-align: right; text-transform: uppercase; }
+    .meta-row span { color: rgba(17,24,39,.55); font-size: .8rem; font-weight: 850; text-transform: uppercase; letter-spacing: .06em; }
+    .meta-row b { text-align: right; }
 
-    .partner-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 22px;
-    }
-
-    .partner-card,
-    .fleet-card,
-    .gallery-box {
-      background: linear-gradient(180deg, var(--panel), #171e24);
-      border: 1px solid rgba(255,255,255,.12);
+    .card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .info-card, .fleet-card, .gallery-box {
+      background: linear-gradient(180deg, rgba(27,39,51,.9), rgba(17,25,34,.94));
+      border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
     }
+    .info-card { padding: 28px; }
+    .tag { display: inline-block; margin-bottom: 16px; color: var(--accent-2); font-size: .78rem; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; }
+    .info-card h3, .fleet-card h3 { margin-bottom: 12px; font-size: clamp(1.65rem, 3vw, 2.55rem); line-height: 1; letter-spacing: -.045em; }
+    .info-card p, .fleet-card p { color: var(--muted); }
+    .link-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+    .small-link { min-height: 40px; padding-inline: 14px; font-size: .84rem; }
 
-    .partner-card {
-      padding: 30px;
-      position: relative;
-      overflow: hidden;
-    }
+    .fleet-layout { display: grid; grid-template-columns: 1.05fr .95fr; overflow: hidden; }
+    .fleet-layout > div { padding: 32px; }
+    .fleet-layout > div:first-child { border-right: 1px solid var(--line); }
+    .fleet-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .mini-stat { padding: 16px; background: rgba(255,255,255,.045); border: 1px solid var(--line); border-radius: 14px; }
+    .mini-stat span { display: block; margin-bottom: 6px; color: var(--faint); font-size: .76rem; font-weight: 850; text-transform: uppercase; letter-spacing: .06em; }
+    .mini-stat b { font-size: 1.25rem; }
+    .fleet-url { margin-top: 14px; padding: 13px 15px; border-radius: 12px; background: rgba(0,0,0,.2); color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .84rem; overflow-wrap: anywhere; }
 
-    .partner-card::before,
-    .fleet-card::before,
-    .gallery-box::before {
-      content: "";
-      display: block;
-      height: 5px;
-      margin: -1px -1px 0;
-      background: linear-gradient(90deg, var(--amber), var(--orange));
-    }
-
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 18px;
-      color: var(--amber-2);
-      font-size: .72rem;
-      font-weight: 900;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-    }
-
-    .tag::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      background: currentColor;
-    }
-
-    .partner-card h3,
-    .fleet-card h3 {
-      margin: 0 0 14px;
-      font-size: clamp(1.8rem, 3.6vw, 3rem);
-      line-height: .98;
-      letter-spacing: -.045em;
-      text-transform: uppercase;
-    }
-
-    .partner-card p,
-    .fleet-card p {
-      color: var(--muted);
-      margin-bottom: 24px;
-    }
-
-    .link-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .small-link {
-      min-height: 40px;
-      padding: 0 14px;
-      color: var(--text);
-      background: rgba(255,255,255,.035);
-      border-color: rgba(255,255,255,.13);
-    }
-
-    .fleet-card { overflow: hidden; }
-    .fleet-layout {
-      display: grid;
-      grid-template-columns: .95fr 1.05fr;
-      gap: 0;
-    }
-
-    .fleet-layout > div { padding: 34px; }
-    .fleet-layout > div:first-child { border-right: 1px solid rgba(255,255,255,.1); }
-
-    .fleet-stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .stat {
-      padding: 18px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 10px;
-    }
-
-    .stat span {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--faint);
-      font-size: .72rem;
-      font-weight: 900;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    .stat b {
-      display: block;
-      color: var(--text);
-      font-size: 1.45rem;
-      line-height: 1;
-    }
-
-    .fleet-url {
-      padding: 14px 16px;
-      border: 1px dashed rgba(217,154,36,.55);
-      background: rgba(0,0,0,.18);
-      color: #d8d0c5;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: .82rem;
-      overflow-wrap: anywhere;
-      border-radius: 8px;
-    }
-
-    .gallery-box {
-      overflow: hidden;
-      padding: 0 0 24px;
-    }
-
-    .gallery-tabs {
-      display: flex;
-      gap: 0;
-      border-bottom: 1px solid rgba(255,255,255,.11);
-      padding: 0 22px;
-      background: rgba(0,0,0,.14);
-    }
-
+    .gallery-box { overflow: hidden; }
+    .gallery-tabs { display: flex; border-bottom: 1px solid var(--line); background: rgba(0,0,0,.14); }
     .gallery-tab {
       appearance: none;
       border: 0;
       background: transparent;
       color: var(--muted);
       cursor: pointer;
-      min-height: 62px;
-      padding: 0 18px;
+      min-height: 60px;
+      padding: 0 22px;
       border-bottom: 3px solid transparent;
-      font-weight: 900;
-      font-size: .82rem;
-      letter-spacing: .05em;
-      text-transform: uppercase;
+      font-weight: 850;
     }
-
     .gallery-tab:hover { color: var(--text); }
-    .gallery-tab.active { color: var(--amber-2); border-bottom-color: var(--amber-2); }
-
-    .count {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 26px;
-      height: 22px;
-      margin-left: 8px;
-      padding: 0 8px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.09);
-      color: var(--text);
-      font-size: .72rem;
-    }
-
-    .gallery-tab.active .count { background: var(--amber); color: #111; }
-
-    .gallery-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 18px 24px 0;
-      color: var(--faint);
-      font-size: .74rem;
-      font-weight: 800;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 14px;
-      padding: 24px;
-    }
-
-    .truck-card {
-      position: relative;
-      aspect-ratio: 4 / 3;
-      overflow: hidden;
-      cursor: pointer;
-      background: #101418;
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 10px;
-      transition: transform .18s ease, border-color .18s ease;
-    }
-
-    .truck-card:hover { transform: translateY(-3px); border-color: var(--amber); }
-    .truck-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform .35s ease;
-    }
+    .gallery-tab.active { color: var(--accent-2); border-bottom-color: var(--accent-2); }
+    .count { display: inline-flex; align-items: center; justify-content: center; min-width: 25px; height: 22px; margin-left: 8px; padding: 0 8px; border-radius: 999px; background: rgba(255,255,255,.09); color: var(--text); font-size: .72rem; }
+    .gallery-meta { display: flex; justify-content: space-between; gap: 16px; padding: 18px 24px 0; color: var(--faint); font-size: .82rem; font-weight: 750; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(245px, 1fr)); gap: 14px; padding: 24px; }
+    .truck-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; cursor: pointer; background: #101418; border: 1px solid var(--line); border-radius: 14px; transition: transform .18s ease, border-color .18s ease; }
+    .truck-card:hover { transform: translateY(-3px); border-color: rgba(255,204,92,.7); }
+    .truck-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
     .truck-card:hover img { transform: scale(1.035); }
-
-    .truck-card .overlay {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: end;
-      padding: 34px 13px 12px;
-      background: linear-gradient(to top, rgba(8,10,12,.9), transparent);
-      color: #eee5d9;
-      font-size: .72rem;
-      font-weight: 800;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-    }
-
+    .truck-card .overlay { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; gap: 12px; align-items: end; padding: 34px 14px 13px; background: linear-gradient(to top, rgba(8,10,12,.88), transparent); color: #f4eee5; font-size: .78rem; font-weight: 800; }
     .date { color: var(--muted); }
-
-    .gallery-empty,
-    .gallery-loading {
-      grid-column: 1 / -1;
-      min-height: 160px;
-      display: grid;
-      place-items: center;
-      padding: 36px;
-      border: 1px dashed rgba(255,255,255,.15);
-      border-radius: 10px;
-      color: var(--muted);
-      text-align: center;
-      background: rgba(0,0,0,.15);
-      font-weight: 800;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-    }
+    .gallery-empty, .gallery-loading { grid-column: 1 / -1; min-height: 160px; display: grid; place-items: center; padding: 34px; border: 1px dashed var(--line); border-radius: 14px; color: var(--muted); text-align: center; background: rgba(0,0,0,.14); font-weight: 800; }
     .gallery-empty strong { display: block; color: var(--text); margin-bottom: 8px; }
 
-    .lightbox {
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 44px 22px;
-      background: rgba(7,9,11,.94);
-    }
+    .lightbox { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center; padding: 44px 22px; background: rgba(7,9,11,.94); }
     .lightbox.open { display: flex; }
-    .lightbox img {
-      max-width: min(1100px, 100%);
-      max-height: 82vh;
-      object-fit: contain;
-      border: 1px solid rgba(255,255,255,.16);
-      box-shadow: 0 25px 70px rgba(0,0,0,.65);
-    }
-    .lightbox-close,
-    .lightbox-nav {
-      position: absolute;
-      border: 0;
-      background: var(--amber);
-      color: #111;
-      cursor: pointer;
-      font-weight: 900;
-      box-shadow: 4px 4px 0 rgba(0,0,0,.45);
-    }
-    .lightbox-close {
-      top: 24px;
-      right: 24px;
-      width: 46px;
-      height: 46px;
-      font-size: 1.35rem;
-    }
-    .lightbox-nav {
-      top: 50%;
-      transform: translateY(-50%);
-      width: 52px;
-      height: 58px;
-      font-size: 1.9rem;
-    }
+    .lightbox img { max-width: min(1100px, 100%); max-height: 82vh; object-fit: contain; border: 1px solid var(--line); box-shadow: 0 25px 70px rgba(0,0,0,.65); border-radius: 10px; }
+    .lightbox-close, .lightbox-nav { position: absolute; border: 0; background: var(--accent); color: #111; cursor: pointer; font-weight: 950; border-radius: 999px; box-shadow: 0 12px 28px rgba(0,0,0,.45); }
+    .lightbox-close { top: 24px; right: 24px; width: 46px; height: 46px; font-size: 1.35rem; }
+    .lightbox-nav { top: 50%; transform: translateY(-50%); width: 52px; height: 58px; font-size: 1.9rem; }
     .lightbox-prev { left: 20px; }
     .lightbox-next { right: 20px; }
-    .lightbox-meta {
-      position: absolute;
-      left: 50%;
-      bottom: 22px;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 18px;
-      max-width: calc(100% - 40px);
-      padding: 11px 16px;
-      background: rgba(16,20,24,.92);
-      border: 1px solid rgba(255,255,255,.13);
-      color: var(--muted);
-      font-size: .74rem;
-      font-weight: 800;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      border-radius: 8px;
-    }
-    .lightbox-meta span { color: var(--amber-2); }
+    .lightbox-meta { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); display: flex; gap: 18px; max-width: calc(100% - 40px); padding: 11px 16px; background: rgba(16,20,24,.92); border: 1px solid var(--line); color: var(--muted); font-size: .78rem; font-weight: 800; border-radius: 999px; }
+    .lightbox-meta span { color: var(--accent-2); }
 
-    .recruit {
-      padding: 86px 0;
-      background:
-        repeating-linear-gradient(135deg, rgba(20,19,18,.08) 0 14px, transparent 14px 28px),
-        var(--card-2);
-      color: var(--ink);
-    }
-
-    .recruit-panel {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 32px;
-      padding: 42px;
-      background: var(--card);
-      border: 3px solid #151515;
-      border-radius: var(--radius);
-      box-shadow: 10px 10px 0 rgba(20,19,18,.18);
-    }
-
-    .recruit-panel h2 {
-      margin: 10px 0 12px;
-      font-size: clamp(2.3rem, 5vw, 5.2rem);
-      line-height: .94;
-      letter-spacing: -.055em;
-      text-transform: uppercase;
-    }
-
-    .recruit-panel p { max-width: 620px; color: rgba(20,19,18,.72); }
+    .recruit { padding: 78px 0; background: var(--card); color: var(--ink); }
+    .recruit-panel { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 30px; padding: 38px; background: #fffaf1; border: 1px solid rgba(17,24,39,.12); border-radius: 24px; box-shadow: 0 20px 50px rgba(17,24,39,.12); }
+    .recruit-panel h2 { margin: 10px 0 12px; font-size: clamp(2.2rem, 5vw, 4.7rem); line-height: .95; letter-spacing: -.06em; }
+    .recruit-panel p { max-width: 620px; color: rgba(17,24,39,.68); }
     .reqs { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; }
-    .req {
-      display: inline-flex;
-      align-items: center;
-      min-height: 34px;
-      padding: 0 11px;
-      background: #fffaf0;
-      border: 1px solid rgba(20,19,18,.22);
-      color: rgba(20,19,18,.82);
-      font-size: .74rem;
-      font-weight: 900;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      border-radius: 999px;
-    }
+    .req { display: inline-flex; align-items: center; min-height: 34px; padding: 0 12px; background: white; border: 1px solid rgba(17,24,39,.12); color: rgba(17,24,39,.78); font-size: .78rem; font-weight: 850; border-radius: 999px; }
 
-    footer {
-      padding: 64px 0 32px;
-      background: #090c0f;
-      color: var(--text);
-    }
-
-    .footer-inner {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 34px;
-    }
-
-    .footer-brand .logo-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-    .footer-brand h4 { margin: 0; font-size: 1.5rem; text-transform: uppercase; }
-    .footer-brand p { max-width: 340px; color: var(--muted); }
-    .footer-col h5 {
-      margin: 0 0 14px;
-      color: var(--amber-2);
-      font-size: .78rem;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-    }
+    footer { padding: 60px 0 30px; background: #080c10; color: var(--text); border-top: 1px solid var(--line); }
+    .footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 34px; }
+    .footer-brand .logo-row { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+    .footer-brand h4 { margin: 0; font-size: 1.35rem; }
+    .footer-brand p { max-width: 360px; color: var(--muted); }
+    .footer-col h5 { margin: 0 0 14px; color: var(--accent-2); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; }
     .footer-col ul { list-style: none; padding: 0; margin: 0; }
-    .footer-col li { margin: 8px 0; color: var(--muted); font-size: .9rem; }
-    .footer-col a:hover { color: var(--amber-2); }
-    .footer-bottom {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 44px;
-      padding-top: 22px;
-      border-top: 1px solid rgba(255,255,255,.1);
-      color: var(--faint);
-      font-size: .74rem;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
+    .footer-col li { margin: 8px 0; color: var(--muted); font-size: .92rem; }
+    .footer-col a:hover { color: var(--accent-2); }
+    .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 42px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--faint); font-size: .78rem; }
 
     @media (max-width: 900px) {
-      .nav { min-height: 68px; }
       .nav-links { display: none; }
-      .hero-grid,
-      .split,
-      .fleet-layout,
-      .recruit-panel { grid-template-columns: 1fr; }
-      .fleet-layout > div:first-child { border-right: 0; border-bottom: 1px solid rgba(255,255,255,.1); }
-      .section-head { grid-template-columns: 1fr; gap: 14px; }
-      .partner-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 66px; }
+      .hero-grid, .split, .fleet-layout, .recruit-panel { grid-template-columns: 1fr; }
+      .fleet-layout > div:first-child { border-right: 0; border-bottom: 1px solid var(--line); }
+      .card-grid { grid-template-columns: 1fr; }
       .footer-inner { grid-template-columns: 1fr 1fr; }
       .footer-brand { grid-column: 1 / -1; }
     }
 
     @media (max-width: 640px) {
       .wrap { width: min(var(--max), calc(100% - 28px)); }
-      .hero { padding: 58px 0 40px; }
-      h1 { font-size: clamp(3.1rem, 15vw, 4.6rem); }
-      .vms { grid-template-columns: 1fr 1fr; }
-      .section { padding: 68px 0; }
-      .gallery-tabs { flex-direction: column; padding: 0; }
-      .gallery-tab { justify-content: flex-start; width: 100%; text-align: left; padding: 0 20px; }
+      h1 { font-size: clamp(3rem, 15vw, 4.5rem); }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .section { padding: 64px 0; }
+      .gallery-tabs { flex-direction: column; }
+      .gallery-tab { width: 100%; text-align: left; }
       .gallery-grid { grid-template-columns: 1fr; padding: 18px; }
-      .lightbox-nav { width: 42px; height: 48px; }
-      .lightbox-meta { flex-wrap: wrap; justify-content: center; }
       .recruit-panel { padding: 28px; }
       .footer-inner { grid-template-columns: 1fr; }
+      .lightbox-nav { width: 42px; height: 48px; }
+      .lightbox-meta { flex-wrap: wrap; justify-content: center; border-radius: 14px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -942,16 +346,13 @@
     <nav class="nav wrap" aria-label="Main navigation">
       <a href="#top" class="brand" aria-label="Scott's Transport home">
         <span class="mark">ST</span>
-        <span>
-          <strong>Scott's Transport</strong>
-          <span>EST · 2024 · UK</span>
-        </span>
+        <span><strong>Scott's Transport</strong><span>Virtual trucking company · UK</span></span>
       </a>
       <ul class="nav-links">
-        <li><a href="#about">Services</a></li>
+        <li><a href="#about">About</a></li>
         <li><a href="#partners">Partners</a></li>
         <li><a href="#fleet">Fleet</a></li>
-        <li><a href="#gallery">Trucks</a></li>
+        <li><a href="#gallery">Gallery</a></li>
         <li><a href="#recruit">Recruit</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -962,84 +363,63 @@
     <section class="hero">
       <div class="wrap hero-grid">
         <div>
-          <span class="label">Long haul operations</span>
+          <span class="eyebrow">Recruiting open</span>
           <h1>Scott's Transport</h1>
-          <p class="lead">A UK-based singleplayer virtual trucking company running logged freight jobs across Europe through MileVox JobTracker.</p>
+          <p class="lead">A UK-based ETS2 virtual trucking company focused on relaxed singleplayer driving, job logging, and building a friendly group of drivers.</p>
           <div class="actions">
-            <a class="btn" href="https://discord.gg/vTJhwhSs8Z" target="_blank" rel="noopener">Apply on Discord</a>
+            <a class="btn" href="https://discord.gg/vTJhwhSs8Z" target="_blank" rel="noopener">Join the Discord</a>
             <a class="btn-secondary" href="https://milevox.app/vtc/Scott's%20Transport" target="_blank" rel="noopener">View MileVox profile</a>
           </div>
-          <div class="yard-strip" aria-hidden="true"><div class="yard-line"></div></div>
         </div>
 
-        <aside class="ops-card" aria-label="Operations summary">
-          <div class="ops-head">
-            <div>
-              <strong>Current standing</strong>
-              <span>Dispatch board</span>
-            </div>
-            <div class="live"><span class="live-dot"></span> Operations active</div>
+        <aside class="hero-card" aria-label="Operations summary">
+          <div class="hero-card-top">
+            <span class="status-pill">Operations active</span>
+            <h2>Current standing</h2>
+            <p>Drive when you want, log your jobs, and keep everything tracked through MileVox.</p>
           </div>
-          <div class="ops-table">
-            <div class="ops-row"><span>Operation</span><b>Singleplayer freight ops</b></div>
-            <div class="ops-row"><span>Tracker</span><b>MileVox JobTracker</b></div>
-            <div class="ops-row"><span>Base</span><b>United Kingdom</b></div>
-            <div class="ops-row"><span>Status</span><b class="highlight">Recruiting open</b></div>
+          <div class="summary-list">
+            <div class="summary-row"><span>Operation</span><b>Singleplayer freight ops</b></div>
+            <div class="summary-row"><span>Tracker</span><b>MileVox JobTracker</b></div>
+            <div class="summary-row"><span>Base</span><b>United Kingdom</b></div>
+            <div class="summary-row"><span>Status</span><b>Recruiting open</b></div>
           </div>
         </aside>
       </div>
     </section>
 
     <section class="stats-band" aria-label="Live statistics">
-      <div class="wrap vms">
-        <div class="vms-cell">
-          <div class="lbl">Drivers</div>
-          <div class="val" id="drivers-val">—</div>
-          <div class="sub">on the books · live</div>
-        </div>
-        <div class="vms-cell">
-          <div class="lbl">Trainees</div>
-          <div class="val" id="trainees-val">—</div>
-          <div class="sub">in training · live</div>
-        </div>
-        <div class="vms-cell">
-          <div class="lbl">Status</div>
-          <div class="val">Active</div>
-          <div class="sub">fleet on the road</div>
-        </div>
-        <div class="vms-cell">
-          <div class="lbl">Recruiting</div>
-          <div class="val">Open</div>
-          <div class="sub">accepting drivers</div>
-        </div>
+      <div class="wrap stats-grid">
+        <div class="stat-card"><div class="lbl">Drivers</div><div class="val" id="drivers-val">—</div><div class="sub">live from MileVox</div></div>
+        <div class="stat-card"><div class="lbl">Trainees</div><div class="val" id="trainees-val">—</div><div class="sub">in training · live</div></div>
+        <div class="stat-card"><div class="lbl">Status</div><div class="val">Active</div><div class="sub">fleet on the road</div></div>
+        <div class="stat-card"><div class="lbl">Recruiting</div><div class="val">Open</div><div class="sub">accepting drivers</div></div>
       </div>
     </section>
 
     <section class="section light" id="about">
       <div class="wrap">
         <div class="section-head">
-          <span class="label">J 02 · Services</span>
-          <div>
-            <h2>Clean miles. Tight outfit.</h2>
-            <p>Simple, logged, singleplayer haulage without the convoy noise.</p>
-          </div>
+          <span class="eyebrow">About</span>
+          <h2>Drive, log, and enjoy the miles.</h2>
+          <p>A simple VTC for ETS2 drivers who want a relaxed place to track jobs and share progress.</p>
         </div>
 
         <div class="split">
           <div class="copy">
-            <p>Scott's Transport runs singleplayer freight ops across Europe — every job logged, timed, and rated through MileVox JobTracker. No multiplayer chaos, no leaderboard farmers, no convoy carnage at junctions.</p>
-            <p>It's a proper haulier set-up in miniature. Disciplined dispatch, real schedules, themed runs, and a sub-contracted operator picking up overflow when the fleet's already on the road.</p>
-            <p>If you care more about the drive than the drama — pulling into a depot at 3am with a clean delivery on the dot — you're in the right cab.</p>
+            <p>Scott's Transport was started in 2024 as a small UK-based virtual trucking company for Euro Truck Simulator 2.</p>
+            <p>We keep things straightforward: complete deliveries, log them through MileVox, and build up your mileage at your own pace.</p>
+            <p>There are no mandatory convoys or awkward activity rules. Just drive, stay respectful, and be part of the community.</p>
           </div>
-          <div class="manifest">
-            <div class="manifest-title"><span>Driver Log</span><span>SCT-001 / 2026</span></div>
-            <div class="manifest-body">
+          <div class="note-card">
+            <div class="note-title"><span>Driver Log</span><span>SCT-001</span></div>
+            <div class="note-body">
               <div class="meta-row"><span>Founded</span><b>2024</b></div>
               <div class="meta-row"><span>Base</span><b>United Kingdom</b></div>
               <div class="meta-row"><span>Platform</span><b>ETS2 Singleplayer</b></div>
-              <div class="meta-row"><span>Job tracker</span><b class="highlight">MileVox</b></div>
-              <div class="meta-row"><span>Sub-contractor</span><b>K.J Evan's &amp; Son's</b></div>
-              <div class="meta-row"><span>Status</span><b class="highlight">Recruiting</b></div>
+              <div class="meta-row"><span>Job tracker</span><b>MileVox</b></div>
+              <div class="meta-row"><span>Partner</span><b>K.J Evan's &amp; Son's</b></div>
+              <div class="meta-row"><span>Status</span><b>Recruiting</b></div>
             </div>
           </div>
         </div>
@@ -1049,28 +429,26 @@
     <section class="section" id="partners">
       <div class="wrap">
         <div class="section-head">
-          <span class="label">J 03 · Partners</span>
-          <div>
-            <h2>Who we run with.</h2>
-            <p>Tools and partner outfits used by Scott's Transport.</p>
-          </div>
+          <span class="eyebrow">Partners</span>
+          <h2>Partners and tools.</h2>
+          <p>The services and partner companies we use to keep Scott's Transport running.</p>
         </div>
 
-        <div class="partner-grid">
-          <article class="partner-card">
+        <div class="card-grid">
+          <article class="info-card">
             <span class="tag">Official Job Tracker</span>
             <h3>MileVox JobTracker</h3>
-            <p>Every load we haul gets logged through MileVox — distance, fuel, damage, delivery time. If it isn't tracked, it didn't happen. It's the source of truth for everything on the fleet's books.</p>
+            <p>MileVox is where we log deliveries, driver stats, company mileage, and overall progress.</p>
             <div class="link-row">
               <a class="small-link" href="https://milevox.app/" target="_blank" rel="noopener">milevox.app</a>
               <a class="small-link" href="https://discord.gg/milevox" target="_blank" rel="noopener">Discord</a>
             </div>
           </article>
 
-          <article class="partner-card">
-            <span class="tag">Sub-contracted Haulier</span>
+          <article class="info-card">
+            <span class="tag">Partner VTC</span>
             <h3>K.J Evan's &amp; Son's</h3>
-            <p>When Scott's is at capacity, KJ Evan's &amp; Son's takes the overflow. A trusted second outfit running the same standards, the same tracker, the same disciplined dispatch we do.</p>
+            <p>K.J Evan's &amp; Son's is a partner VTC we work with when extra support is needed.</p>
             <div class="link-row">
               <a class="small-link" href="https://discord.gg/sNVxkFgHku" target="_blank" rel="noopener">Discord</a>
               <a class="small-link" href="https://milevox.app/vtc/K.J%20EVANS%20%26%20SONS" target="_blank" rel="noopener">MileVox profile</a>
@@ -1083,28 +461,24 @@
     <section class="section" id="fleet">
       <div class="wrap">
         <div class="section-head">
-          <span class="label">J 04 · Our Fleet</span>
-          <div>
-            <h2>Tracked and logged on MileVox.</h2>
-            <p>Public records for jobs, mileage, and standing.</p>
-          </div>
+          <span class="eyebrow">Our Fleet</span>
+          <h2>Everything tracked in one place.</h2>
+          <p>View our jobs, mileage, drivers, and progress through our public MileVox profile.</p>
         </div>
 
         <div class="fleet-card fleet-layout">
           <div>
             <span class="tag">Public Profile</span>
             <h3>Scott's Transport on MileVox</h3>
-            <p>Every job, every mile, every delivery — recorded and publicly viewable. Check our standing, browse the driver leaderboard, and see what the fleet's been hauling.</p>
-            <div class="actions">
-              <a class="btn" href="https://milevox.app/vtc/Scott's%20Transport" target="_blank" rel="noopener">View our profile</a>
-            </div>
+            <p>Our MileVox profile keeps everything in one place, from completed deliveries to driver activity and company progress.</p>
+            <div class="actions"><a class="btn" href="https://milevox.app/vtc/Scott's%20Transport" target="_blank" rel="noopener">View our profile</a></div>
           </div>
           <div>
             <div class="fleet-stats">
-              <div class="stat"><span>Platform</span><b>MileVox</b></div>
-              <div class="stat"><span>Game</span><b>ETS2</b></div>
-              <div class="stat"><span>Base</span><b>UK</b></div>
-              <div class="stat"><span>Standing</span><b>Active</b></div>
+              <div class="mini-stat"><span>Platform</span><b>MileVox</b></div>
+              <div class="mini-stat"><span>Game</span><b>ETS2</b></div>
+              <div class="mini-stat"><span>Base</span><b>UK</b></div>
+              <div class="mini-stat"><span>Standing</span><b>Active</b></div>
             </div>
             <div class="fleet-url">milevox.app/vtc/Scott's Transport</div>
           </div>
@@ -1115,11 +489,9 @@
     <section class="section" id="gallery">
       <div class="wrap">
         <div class="section-head">
-          <span class="label">J 05 · Truck Gallery</span>
-          <div>
-            <h2>On the road, in the cab.</h2>
-            <p>Fleet photos synced from Discord.</p>
-          </div>
+          <span class="eyebrow">Truck Gallery</span>
+          <h2>Photos from the road.</h2>
+          <p>Truck screenshots posted by our drivers, pulled in from Discord.</p>
         </div>
 
         <div class="gallery-box">
@@ -1149,17 +521,17 @@
     <section class="recruit" id="recruit">
       <div class="wrap recruit-panel">
         <div>
-          <span class="label">Driver vacancies open</span>
-          <h2>Get in the cab.</h2>
-          <p>We've got slots open. Keep a clean run, log your jobs, turn up on Discord — you can drive for us.</p>
+          <span class="eyebrow">Recruiting now</span>
+          <h2>Join Scott's Transport.</h2>
+          <p>New drivers are welcome. Join the Discord, create a MileVox account, and start logging your ETS2 jobs with us.</p>
           <div class="reqs">
             <span class="req">ETS2 + DLC</span>
             <span class="req">MileVox account</span>
-            <span class="req">16+ / clean driver</span>
+            <span class="req">Respectful driving</span>
             <span class="req">Discord active</span>
           </div>
         </div>
-        <a class="btn" href="https://discord.gg/vTJhwhSs8Z" target="_blank" rel="noopener">Start application</a>
+        <a class="btn" href="https://discord.gg/vTJhwhSs8Z" target="_blank" rel="noopener">Join the Discord</a>
       </div>
     </section>
   </main>
@@ -1168,17 +540,12 @@
     <div class="wrap">
       <div class="footer-inner">
         <div class="footer-brand">
-          <div class="logo-row">
-            <span class="mark">ST</span>
-            <h4>Scott's Transport</h4>
-          </div>
-          <p>A singleplayer virtual trucking company. Tracked jobs, long hauls, no nonsense. Running since 2024 out of the UK.</p>
+          <div class="logo-row"><span class="mark">ST</span><h4>Scott's Transport</h4></div>
+          <p>A UK-based ETS2 virtual trucking company for relaxed singleplayer drivers. Running since 2024.</p>
         </div>
         <div class="footer-col">
           <h5>Dispatch</h5>
-          <ul>
-            <li>Discord: <a href="https://discord.gg/vTJhwhSs8Z" target="_blank" rel="noopener">@scottstransport</a></li>
-          </ul>
+          <ul><li>Discord: <a href="https://discord.gg/vTJhwhSs8Z" target="_blank" rel="noopener">@scottstransport</a></li></ul>
         </div>
         <div class="footer-col">
           <h5>Operations</h5>
@@ -1190,16 +557,12 @@
         </div>
         <div class="footer-col">
           <h5>Standing</h5>
-          <ul>
-            <li>Recruiting open</li>
-            <li>Fleet: active</li>
-            <li>Status: nominal</li>
-          </ul>
+          <ul><li>Recruiting open</li><li>Fleet: active</li><li>Status: nominal</li></ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 Scott's Transport · All hauls reserved</span>
-        <span>SCT-OPS-2026 · SP-ONLY</span>
+        <span>© 2026 Scott's Transport</span>
+        <span>ETS2 singleplayer VTC · UK</span>
       </div>
     </div>
   </footer>
@@ -1265,7 +628,7 @@
         grid.innerHTML = `
           <div class="gallery-empty">
             <strong>No trucks posted yet</strong>
-            Drop a screenshot in the fleet channel on Discord — it'll appear here.
+            Drop a screenshot in the fleet channel on Discord — it will appear here.
           </div>`;
         return;
       }
